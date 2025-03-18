@@ -14,6 +14,9 @@ importers:
       zod:
         specifier: ^3.24.2
         version: 3.24.2
+      zod-to-json-schema:
+        specifier: 3.22.5
+        version: 3.22.5(zod@3.24.2)
     devDependencies:
       '@biomejs/biome':
         specifier: ^1.9.4
@@ -1191,6 +1194,11 @@ packages:
   wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
 
+  zod-to-json-schema@3.22.5:
+    resolution: {integrity: sha512-+akaPo6a0zpVCCseDed504KBJUQpEW5QZw7RMneNmKw+fGaML1Z9tUNLnHHAC8x6dzVRO1eB2oEMyZRnuBZg7Q==}
+    peerDependencies:
+      zod: ^3.22.4
+
   zod-to-json-schema@3.24.2:
     resolution: {integrity: sha512-pNUqrcSxuuB3/+jBbU8qKUbTbDqYUaG1vf5cXFjbhGgoUuA1amO/y4Q8lzfOhHU8HNPK6VFJ18lBDKj3OHyDsg==}
     peerDependencies:
@@ -2235,6 +2243,10 @@ snapshots:
       strip-ansi: 7.1.0
 
   wrappy@1.0.2: {}
+
+  zod-to-json-schema@3.22.5(zod@3.24.2):
+    dependencies:
+      zod: 3.24.2
 
   zod-to-json-schema@3.24.2(zod@3.24.2):
     dependencies:
