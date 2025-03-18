@@ -1,0 +1,41 @@
+{
+	"name": "mcp-codesign",
+	"version": "1.0.0",
+	"bin": {
+		"mcp-codesign": "dist/index.js"
+	},
+	"description": "mcp codesign",
+	"type": "module",
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": "./dist/index.js"
+	},
+	"files": [
+		"dist",
+    "*.d.ts"
+	],
+	"scripts": {
+		"build": "tsup",
+		"release": "npm publish --no-git-checks --access public --registry https://registry.npmjs.org/",
+		"dev": "tsup --watch",
+		"preview": "node dist/index.js",
+		"test": "vitest",
+		"build:tsc": "tsc"
+	},
+	"keywords": ["mcp", "codesign"],
+	"author": "hens",
+	"license": "ISC",
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"@types/node": "^22.13.4",
+		"tsup": "^8.3.6",
+		"typescript": "^5.7.3",
+		"vitest": "^3.0.6"
+	},
+	"dependencies": {
+		"@modelcontextprotocol/sdk": "^1.7.0",
+		"zod": "^3.24.2"
+	}
+}
