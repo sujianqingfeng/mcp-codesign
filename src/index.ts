@@ -6,7 +6,7 @@ import { z } from "zod"
 
 const server = new McpServer({
 	name: "codesign",
-	version: "0.0.1",
+	version: "1.0.0",
 })
 
 server.tool(
