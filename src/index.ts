@@ -7,8 +7,6 @@ import { WebSocket } from "ws"
 
 // WebSocket中转服务的连接参数
 const WS_BRIDGE_URL = process.env.WS_BRIDGE_URL || "ws://localhost:3691"
-// 存储标注数据
-let annotationData: any = null
 // WebSocket客户端连接
 let wsClient: WebSocket | null = null
 
@@ -20,22 +18,7 @@ function connectToWsBridge() {
 		console.error("Connected to WebSocket Bridge")
 	})
 	
-	wsClient.on("message", (message) => {
-		try {
-			const data = JSON.parse(message.toString())
-			console.error("Received data from WebSocket Bridge:", data)
-			
-			// 如果是标注数据，存储它
-			if (data.type === "annotation") {
-				annotationData = data.data
-			}
-		} catch (error) {
-			console.error("Error parsing message:", error)
-		}
-	})
-	
 	wsClient.on("close", () => {
-		console.error("Disconnected from WebSocket Bridge, trying to reconnect...")
 		setTimeout(connectToWsBridge, 5000) // 尝试重新连接
 	})
 	
@@ -82,23 +65,69 @@ server.tool(
 	"get annotation data from codesign",
 	{},
 	async () => {
+    let annotationData: any = null
+    let errorMessage: string | null = null
+    
 		// 主动向WebSocket中转服务请求最新数据
 		if (wsClient && wsClient.readyState === WebSocket.OPEN) {
+			// 创建一个Promise，当接收到消息时解决
+			const annotationPromise = new Promise<any>((resolve) => {
+				// 使用once只监听一次message事件
+				wsClient!.once("message", (message) => {
+					try {
+						const data = JSON.parse(message.toString())
+						if (data.type === "annotation") {
+							resolve(data.data)
+						} else if (data.type === "error") {
+              errorMessage = data.message || "Unknown error occurred"
+              resolve(null)
+            } else {
+							resolve(null) // 如果收到的不是标注数据，则返回null
+						}
+					} catch (error) {
+						console.error("Error parsing message:", error)
+						errorMessage = "Error parsing message from server"
+						resolve(null)
+					}
+				})
+				
+				// 监听error事件
+				wsClient!.once("error", (error) => {
+					errorMessage = error.message || "WebSocket error occurred during request"
+					resolve(null)
+				})
+				
+				// 设置超时，防止无限等待
+				setTimeout(() => {
+					errorMessage = errorMessage || "Request timed out after 5 seconds"
+					resolve(null)
+				}, 5000)
+			})
+			
 			// 发送获取标注数据的请求
 			wsClient.send(JSON.stringify({
 				type: "getAnnotation"
 			}))
 			
-			// 等待一段时间，让数据有机会返回
-			await new Promise(resolve => setTimeout(resolve, 2000))
-		}
+			// 等待数据返回
+			const newAnnotationData = await annotationPromise
+      if (newAnnotationData) {
+        annotationData = newAnnotationData
+      }
+		} else {
+      errorMessage = "WebSocket is not connected"
+    }
 		
 		// 返回当前的标注数据
 		return {
 			content: [
 				{
 					type: "text",
-					text: JSON.stringify(annotationData || { error: "No annotation data available" }),
+					text: JSON.stringify(
+            annotationData 
+              ? annotationData  
+              : { error: errorMessage || "No annotation data available" }
+          ),
 				},
 			],
 		}
