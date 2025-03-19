@@ -11,9 +11,6 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: ^1.7.0
         version: 1.7.0
-      '@types/ws':
-        specifier: ^8.18.0
-        version: 8.18.0
       ws:
         specifier: ^8.18.1
         version: 8.18.1
@@ -27,6 +24,9 @@ importers:
       '@types/node':
         specifier: ^22.13.4
         version: 22.13.4
+      '@types/ws':
+        specifier: ^8.18.0
+        version: 8.18.0
       tsup:
         specifier: ^8.3.6
         version: 8.3.6(postcss@8.5.3)(typescript@5.7.3)
