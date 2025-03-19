@@ -1,7 +1,7 @@
 import { defineConfig } from "tsup"
 
 export default defineConfig({
-	entry: ["src/index.ts"],
+	entry: ["src/index.ts", "src/ws-bridge.ts"],
 	format: ["esm"], // 同时输出 CommonJS 和 ESM 格式
 	dts: true, // 生成类型声明文件
 	splitting: false,

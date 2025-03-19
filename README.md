@@ -1,6 +1,58 @@
-# mcp-codesign
+# MCP Codesign
 
-一个基于 MCP (Model Context Protocol) 的图片链接处理工具，用于优化图片 URL 以控制图片尺寸与质量。
+Model Context Protocol integration for Codesign，提供浏览器插件与 MCP 服务器之间的通信能力。
+
+## 架构
+
+项目包含两个主要组件：
+
+1. **WebSocket 中转服务** - 用于在浏览器插件和多个 MCP 服务器实例之间中转消息
+2. **MCP 服务器** - 提供 MCP 工具功能，通过 WebSocket 客户端连接到中转服务
+
+这种架构避免了多个 MCP 服务器实例在同一台机器上运行时的端口冲突问题。
+
+## 安装
+
+```bash
+# 使用 pnpm 安装依赖
+pnpm install
+```
+
+## 构建
+
+```bash
+pnpm run build
+```
+
+## 运行
+
+需要先启动 WebSocket 中转服务，然后再启动 MCP 服务器：
+
+### 1. 启动 WebSocket 中转服务
+
+```bash
+# 默认端口：浏览器插件 3690，MCP服务器 3691
+pnpm run start:bridge
+
+# 或者指定自定义端口
+WS_PORT=8080 HTTP_PORT=8081 pnpm run start:bridge
+```
+
+### 2. 启动 MCP 服务器
+
+```bash
+# 默认连接到 ws://localhost:3691
+pnpm run start
+
+# 或者指定自定义中转服务地址
+WS_BRIDGE_URL=ws://localhost:8081 pnpm run start
+```
+
+## 环境变量
+
+- `WS_PORT` - 浏览器插件连接的端口（默认：3690）
+- `HTTP_PORT` - MCP 服务器连接的端口（默认：3691）
+- `WS_BRIDGE_URL` - MCP 服务器连接的 WebSocket 中转服务地址（默认：ws://localhost:3691）
 
 ## 功能
 

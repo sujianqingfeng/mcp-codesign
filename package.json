@@ -2,19 +2,19 @@
 	"name": "mcp-codesign",
 	"version": "1.0.3",
 	"bin": {
-		"mcp-codesign": "dist/index.js"
+		"mcp-codesign": "dist/index.js",
+		"mcp-codesign-ws-bridge": "dist/ws-bridge.js"
 	},
-	"description": "mcp codesign",
+	"description": "Model Context Protocol integration for Codesign",
 	"type": "module",
-	"main": "./dist/index.js",
+	"main": "dist/index.js",
 	"module": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"exports": {
 		".": "./dist/index.js"
 	},
 	"files": [
-		"dist",
-		"*.d.ts"
+		"dist"
 	],
 	"scripts": {
 		"build": "tsup",
@@ -22,23 +22,29 @@
 		"dev": "tsup --watch",
 		"preview": "node dist/index.js",
 		"test": "vitest",
-		"build:tsc": "tsc"
+		"build:tsc": "tsc",
+		"start": "node dist/index.js",
+		"start:bridge": "node dist/ws-bridge.js"
 	},
 	"keywords": [
-		"mcp",
-		"codesign"
+		"mcp"
 	],
 	"author": "hens",
 	"license": "ISC",
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
 		"@types/node": "^22.13.4",
+		"@types/ws": "^8.18.0",
 		"tsup": "^8.3.6",
 		"typescript": "^5.7.3",
 		"vitest": "^3.0.6"
 	},
 	"dependencies": {
 		"@modelcontextprotocol/sdk": "^1.7.0",
+		"ws": "^8.18.1",
 		"zod": "^3.24.2"
+	},
+	"engines": {
+		"node": ">=18.0.0"
 	}
 }
